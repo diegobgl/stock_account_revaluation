@@ -1,16 +1,16 @@
 <odoo>
-    <!-- Nuevo menú bajo "Operaciones" -->
-    <menuitem id="menu_generate_accounting_entries"
-              name="Generar Asientos Contables"
-              parent="stock.menu_stock_warehouse_mgmt"
-              action="action_generate_accounting_entries_menu"
-              sequence="10"/>
-
-    <!-- Acción asociada al menú -->
+    <!-- Definir la acción primero -->
     <record id="action_generate_accounting_entries_menu" model="ir.actions.act_window">
         <field name="name">Generar Asientos Contables</field>
         <field name="res_model">generate.accounting.entries.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
+    <!-- Definir el menú después de la acción -->
+    <menuitem id="menu_generate_accounting_entries"
+              name="Generar Asientos Contables"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="stock_account_revaluation.action_generate_accounting_entries_menu"
+              sequence="10"/>
 </odoo>
