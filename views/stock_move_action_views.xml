@@ -1,24 +1,5 @@
 <odoo>
-    <!-- Acción server para generar asientos contables desde stock.picking -->
-    <record id="action_generate_accounting_entries_from_picking" model="ir.actions.server">
-        <field name="name">Generar Asientos Contables</field>
-        <field name="model_id" ref="stock.model_stock_picking"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = {
-                'type': 'ir.actions.act_window',
-                'name': 'Generar Asientos Contables',
-                'res_model': 'generate.accounting.entries.wizard',
-                'view_mode': 'form',
-                'target': 'new',
-                'context': {
-                    'default_stock_move_ids': [m.id for p in record for m in p.move_ids_without_package],
-                }
-            }
-        </field>
-    </record>
-
-  <!-- Acción para abrir el wizard desde la vista tree -->
+    <!-- Acción para abrir el wizard desde la vista tree -->
     <record id="action_stock_picking_generate_accounting_entries_tree" model="ir.actions.act_window">
         <field name="name">Generar Asientos Contables</field>
         <field name="res_model">generate.accounting.entries.wizard</field>
@@ -26,6 +7,4 @@
         <field name="target">new</field>
         <field name="context">{'default_stock_move_ids': active_ids}</field>
     </record>
-
-
 </odoo>

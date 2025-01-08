@@ -5,12 +5,13 @@
         <field name="res_model">generate.accounting.entries.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="context">{}</field>
     </record>
 
     <!-- Menú para abrir el wizard -->
     <menuitem id="menu_generate_accounting_entries"
               name="Generar Asientos Contables"
               parent="stock.menu_stock_warehouse_mgmt"
-              action="stock_account_revaluation.action_generate_accounting_entries_menu"
+              action="action_generate_accounting_entries_menu"
               sequence="10"/>
 </odoo>
