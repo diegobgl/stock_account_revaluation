@@ -1,22 +1,29 @@
 <odoo>
-    <record id="action_generate_accounting_entries" model="ir.actions.act_window">
+    <!-- Acción server para generar asientos contables desde stock.picking -->
+    <record id="action_generate_accounting_entries_from_picking" model="ir.actions.server">
+        <field name="name">Generar Asientos Contables</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Generar Asientos Contables',
+                'res_model': 'generate.accounting.entries.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'default_stock_move_ids': [m.id for p in record for m in p.move_ids_without_package],
+                }
+            }
+        </field>
+    </record>
+
+    <!-- Agregar la acción al menú contextual de stock.picking -->
+    <record id="action_stock_picking_generate_accounting_entries_tree" model="ir.actions.act_window">
         <field name="name">Generar Asientos Contables</field>
         <field name="res_model">generate.accounting.entries.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-    </record>
-
-    <record id="action_stock_move_generate_accounting_entries" model="ir.ui.view">
-        <field name="name">stock.move.action.generate.accounting.entries</field>
-        <field name="model">stock.move</field>
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <button string="Generar Asientos Contables" 
-                            type="action" 
-                            name="%(action_generate_accounting_entries)d"/>
-                </header>
-            </form>
-        </field>
+        <field name="context">{'default_stock_move_ids': active_ids}</field>
     </record>
 </odoo>
