@@ -1,33 +1,35 @@
 <odoo>
-    <!-- Vista Tree extendida con botón de acción -->
+    <!-- Vista Tree extendida para stock.move -->
     <record id="view_stock_move_tree_with_action" model="ir.ui.view">
         <field name="name">stock.move.tree.with.action</field>
         <field name="model">stock.move</field>
         <field name="inherit_id" ref="stock.view_move_tree"/>
         <field name="arch" type="xml">
             <tree>
-                <field name="id"/>
                 <field name="product_id"/>
                 <field name="date"/>
                 <field name="state"/>
-                <field name="account_move_ids"/>
+                <field name="quantity_done"/>
+                <field name="location_id"/>
+                <field name="location_dest_id"/>
+                <field name="stock_valuation_layer_ids"/>
                 <!-- Agregar el botón -->
-                <button name="action_generate_accounting_entries"
-                        string="Generar Valorización"
+                <button name="action_generate_valuation_and_accounting"
+                        string="Generar Valorización y Asiento"
                         type="object"
                         class="btn-primary"/>
             </tree>
         </field>
     </record>
 
-    <!-- Acción masiva para generar valorizaciones -->
-    <record id="action_stock_move_generate_accounting_entries" model="ir.actions.server">
-        <field name="name">Generar Valorizaciones</field>
+    <record id="action_stock_move_generate_valuation_and_accounting" model="ir.actions.server">
+        <field name="name">Generar Valorizaciones y Asientos</field>
         <field name="model_id" ref="stock.model_stock_move"/>
         <field name="state">code</field>
         <field name="code">
             for move in records:
-                move.action_generate_accounting_entries()
+                move.action_generate_valuation_and_accounting()
         </field>
     </record>
+
 </odoo>
