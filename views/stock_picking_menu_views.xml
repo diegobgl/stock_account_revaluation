@@ -1,11 +1,11 @@
 <odoo>
-    <!-- Nuevo menú bajo el menú raíz del módulo de inventario -->
+    <!-- Nuevo menú bajo "Operaciones" -->
     <menuitem id="menu_generate_accounting_entries"
               name="Generar Asientos Contables"
-              parent="stock.menu_stock_root"
+              parent="stock.menu_stock_warehouse_mgmt"
               action="action_generate_accounting_entries_menu"
-              sequence="50"/>
-    
+              sequence="10"/>
+
     <!-- Acción asociada al menú -->
     <record id="action_generate_accounting_entries_menu" model="ir.actions.act_window">
         <field name="name">Generar Asientos Contables</field>
