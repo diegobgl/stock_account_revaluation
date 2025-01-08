@@ -1,10 +1,33 @@
 <odoo>
-    <!-- Acción para abrir el wizard desde la vista tree -->
-    <record id="action_stock_picking_generate_accounting_entries_tree" model="ir.actions.act_window">
-        <field name="name">Generar Asientos Contables</field>
-        <field name="res_model">generate.accounting.entries.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="context">{'default_stock_move_ids': active_ids}</field>
+    <!-- Vista Tree extendida con botón de acción -->
+    <record id="view_stock_move_tree_with_action" model="ir.ui.view">
+        <field name="name">stock.move.tree.with.action</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="product_id"/>
+                <field name="date"/>
+                <field name="state"/>
+                <field name="account_move_ids"/>
+                <!-- Agregar el botón -->
+                <button name="action_generate_accounting_entries"
+                        string="Generar Valorización"
+                        type="object"
+                        class="btn-primary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción masiva para generar valorizaciones -->
+    <record id="action_stock_move_generate_accounting_entries" model="ir.actions.server">
+        <field name="name">Generar Valorizaciones</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="state">code</field>
+        <field name="code">
+            for move in records:
+                move.action_generate_accounting_entries()
+        </field>
     </record>
 </odoo>

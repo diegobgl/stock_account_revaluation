@@ -10,16 +10,27 @@ class GenerateAccountingEntriesWizard(models.TransientModel):
         ('incoming', 'Entrada'),
         ('outgoing', 'Salida'),
         ('internal', 'Interno')
-    ], string='Tipo de Movimiento', required=True)
-    stock_move_ids = fields.Many2many('stock.move', string='Movimientos de Stock', default=lambda self: self._default_stock_moves())
+    ], string='Tipo de Movimiento', required=False)
 
-    @api.model
-    def _default_stock_moves(self):
-        # Obtener los movimientos desde el contexto (si existen)
-        return self.env['stock.move'].browse(self.env.context.get('default_stock_move_ids', []))
-
-    def generate_accounting_entries(self):
-        """Generar asientos contables para los movimientos seleccionados."""
-        for move in self.stock_move_ids:
-            move._create_accounting_entries()  # Llama al método que genera los asientos contables
-        return {'type': 'ir.actions.act_window_close'}
+    def search_stock_moves_without_accounting(self):
+        """Buscar movimientos de stock sin valorización."""
+        domain = [
+            ('date', '>=', self.start_date),
+            ('date', '<=', self.end_date),
+            ('state', '=', 'done'),
+            ('account_move_ids', '=', False)  # Movimientos sin asiento contable
+        ]
+        if self.move_type:
+            domain.append(('picking_type_id.code', '=', self.move_type))
+        
+        stock_moves = self.env['stock.move'].search(domain)
+        
+        # Retornar una acción para mostrar los resultados en una vista tree con opción de acción masiva
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Movimientos Sin Valorización',
+            'res_model': 'stock.move',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', stock_moves.ids)],
+            'context': {'create': False},  # Evitar creación de nuevos movimientos desde esta vista
+        }

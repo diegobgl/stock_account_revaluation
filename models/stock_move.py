@@ -3,12 +3,11 @@ from odoo import models, fields
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    missing_accounting_entries = fields.Boolean(
-        string='Faltan Asientos Contables',
-        compute='_compute_missing_accounting_entries',
-        store=True
-    )
-
-    def _compute_missing_accounting_entries(self):
+    def action_generate_accounting_entries(self):
+        """Generar valorizaciones y asientos contables para los movimientos seleccionados."""
         for move in self:
-            move.missing_accounting_entries = not move.account_move_ids
+            # Verifica si ya tiene asientos contables
+            if not move.account_move_ids:
+                # Método nativo para crear las valorizaciones y los asientos
+                move._create_accounting_entries()
+        return True
