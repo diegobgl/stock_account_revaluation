@@ -8,6 +8,8 @@
     'data': [
         'views/wizard_generate_accounting_entries_views.xml',
         'views/stock_move_action_views.xml',
+        'views/stock_picking_menu_views.xml',
+
     ],
     'installable': True,
     'application': False,

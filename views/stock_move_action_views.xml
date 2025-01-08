@@ -26,4 +26,7 @@
         <field name="target">new</field>
         <field name="context">{'default_stock_move_ids': active_ids}</field>
     </record>
+
+
+
 </odoo>
