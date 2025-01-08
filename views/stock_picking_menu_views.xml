@@ -1,5 +1,5 @@
 <odoo>
-    <!-- Definir la acción primero -->
+    <!-- Acción asociada al wizard -->
     <record id="action_generate_accounting_entries_menu" model="ir.actions.act_window">
         <field name="name">Generar Asientos Contables</field>
         <field name="res_model">generate.accounting.entries.wizard</field>
@@ -7,7 +7,7 @@
         <field name="target">new</field>
     </record>
 
-    <!-- Definir el menú después de la acción -->
+    <!-- Menú para abrir el wizard -->
     <menuitem id="menu_generate_accounting_entries"
               name="Generar Asientos Contables"
               parent="stock.menu_stock_warehouse_mgmt"
