@@ -1,8 +1,8 @@
 <odoo>
-    <!-- Nuevo menú en "Operaciones de Bodega" -->
+    <!-- Nuevo menú bajo el menú raíz del módulo de inventario -->
     <menuitem id="menu_generate_accounting_entries"
               name="Generar Asientos Contables"
-              parent="stock.menu_stock_picking"
+              parent="stock.menu_stock_root"
               action="action_generate_accounting_entries_menu"
               sequence="50"/>
     
