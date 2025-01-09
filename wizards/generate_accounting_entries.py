@@ -22,30 +22,23 @@ class GenerateAccountingEntriesWizard(models.TransientModel):
         ]
 
         # Agregar condiciones según los tipos de ubicación
-        location_rules = [
-            # Condición 1: Transito a Producción
+        location_conditions = [
             ('location_id.usage', '=', 'transit'),
             ('location_dest_id.usage', '=', 'production'),
-
-            # Condición 2: Almacén a Producción
+            '|',
             ('location_id.usage', '=', 'internal'),
             ('location_dest_id.usage', '=', 'production'),
-
-            # Condición 3: Producción a Producción
+            '|',
             ('location_id.usage', '=', 'production'),
             ('location_dest_id.usage', '=', 'production'),
-
-            # Condición 4: Producción a Tránsito
+            '|',
             ('location_id.usage', '=', 'production'),
             ('location_dest_id.usage', '=', 'transit'),
         ]
 
-        # Agregar las condiciones de ubicación al dominio
-        location_conditions = ['|', '|', '|']  # Unir las condiciones con OR
-        for rule in location_rules:
-            location_conditions.extend([rule])
-
-        domain.append(location_conditions)
+        # Combinar el dominio principal con las condiciones de ubicación
+        domain += ['|'] * (len(location_conditions) // 2)  # Añadir operadores OR
+        domain += location_conditions
 
         # Buscar los movimientos según el dominio actualizado
         stock_moves = self.env['stock.move'].search(domain)
